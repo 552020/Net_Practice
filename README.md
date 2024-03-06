@@ -39,7 +39,7 @@ The IP protocol is part of the Network Layer (Layer 3) of the OSI model.
 
 IPv4 is essentially a protocol for communication over the Internet and other packet-switched networks, defining how devices on the network are identified through unique IP addresses. This identification facilitates the routing of data between devices across the network, enabling them to communicate with each other.
 
-An **IPv4 address** is a 32-bits address. Normally is written in a human readable notation like 192.108.42.64 (in IPv4).
+An **IPv4 address** is a 32-bits address. Normally is written in a human readable notation (dotted-decimal format) like 192.108.42.64 (in IPv4).
 
 The purpose of an IP Address is to **locate** a device (a computer, a printer, a server) on a network. Devices on a network are called 'nodes', but also to **identfy**.
 
@@ -81,22 +81,47 @@ The standards for network addresses, broadcasts, subnet masks, and gateways are 
 
 - [ ] Problem about subnet masking and IP: theoretically two indentical IP could indicate two different adresses, cause their subnet mask is different. So my idea to solve this problem and route messages correctly is that or the subnet mask is alwasy travelling with the IP address or there is a layer on the 'raw' internet beyond the nodes of the IPS, in which all the IP addresses have the same subnet mask.
 
+#### How to: subnet range from IP Address
+
+How to find out the range of a subnet for a given IP address and a given subnet mask.
+
 ### CIDR Notation
 
 "192.168.1.1" with subnet mask "255.255.255.0", you'd use "192.168.1.1/24".
 
+### Nodes
+
+- Switch
+- Router
+- Client
+
 ### Switch
 
-Does nothing (for our purpose).
+Does nothing (for our purposes). It divides the subnet in multiple parts and it keeps the part with no devices involved in the communication free.
 
 ### Router
 
-It is a device that connects two or more packet-switched networks or subnetworks. It forwars data packets to their intended IP addresses. To this purpose it has a **internal routing table**, which is a list of paths to various network destinations.
+It is a device that connects two or more packet-switched networks or subnetworks. It forwards data packets to their intended IP addresses. To this purpose it has a **internal routing table**, which is a list of paths to various network destinations.
+
+Normally a router becomes a packet which wants to reach a ceratin IP address (with a certain mask). The router check if any of its hosts match the address, if it's not the case, it checks if it has any rule to forward packets for certain IP adresses to a specific address (normally another connected router), if this is not the case then it send the packet to the default gateway
+
+### Default gateway
+
+The default gateway is a network node (usually a router), that serves as an access point or IP router that a computer in a network uses to send information to a computer outside its network or to the internet.If the router (serving as the default gateway) doesn't recognise the IP address of a message as being part of its network, or doesn't have a specific route for the destination IP address, it will forward the message to the default gateway (normally another router or the internet)
+
+The default gateway is the default 'exit point for the local network, if the IP address is not part of that network.
+
+Normally is used to provide a pathway for outbound traffic from a local network to reach the internet.
+
+The information about the default gateway is stored in the routing table.
+
+The default gateway is indicated in the destination with the IP Address of 0.0.0.0 and a subnetting mask of 0.0.0.0. So we can write it as 0.0.0.0/0. This notation matches all possible addresses, cause the subnet mask is 0.0.0.0 on a network address 0.0.0.- for address not in the network and for address for which we don't have pathways in the routing table, just send the packet to the node associated to the default gateway as next node.
+
+https://en.wikipedia.org/wiki/Default_gateway
 
 #### Resources
 
-https://en.wikipedia.org/wiki/Internet_Protocol_version_4#:~:text=Internet%20Protocol%20version%204%20(IPv4,the%20ARPANET%20in%20January%201983.
-
-## Resources
+- IPv4 (wiki): https://en.wikipedia.org/wiki/Internet_Protocol_version_4#:~:text=Internet%20Protocol%20version%204%20(IPv4,the%20ARPANET%20in%20January%201983.
 
 - Youssef Agnaou [NetPractice](https://medium.com/@imyzf/netpractice-2d2b39b6cf0a)
+- [TC/IP Adressing and Subnetting - Microsoft](https://learn.microsoft.com/en-us/troubleshoot/windows-client/networking/tcpip-addressing-and-subnetting)
